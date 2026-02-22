@@ -8,11 +8,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Requirement 1: Email Step
       - name: 24f3003921@ds.study.iitm.ac.in
         run: echo "Hello, world!"
 
-      # Requirement 2: Cache with exact key 'cache-fa9d8f4'
       - name: Cache Dependencies
         id: cache-step
         uses: actions/cache@v4
@@ -20,8 +18,6 @@ jobs:
           path: my-cache-folder
           key: cache-fa9d8f4
 
-      # Requirement 3: Step named 'prime-cache-fa9d8f4'
-      # It echoes hit/miss result and MUST succeed (not skip)
       - name: prime-cache-fa9d8f4
         run: |
           echo "Cache Hit: ${{ steps.cache-step.outputs.cache-hit }}"
