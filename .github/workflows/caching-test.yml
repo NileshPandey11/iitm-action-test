@@ -1,0 +1,30 @@
+name: Speed up CI with Caching
+on: [push, workflow_dispatch]
+
+jobs:
+  test-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 1. Attempt to Restore the Cache
+      - name: Cache Dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: my-dummy-data # The folder we want to save
+          key: cache-fa9d8f4   # Your requested unique key
+
+      # 2. Prime the Cache (This only runs if there's a miss)
+      - name: prime-cache-fa9d8f4
+        if: steps.cache-step.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache Miss! Creating dummy data to prime the cache..."
+          mkdir -p my-dummy-data
+          echo "This data is now cached" > my-dummy-data/info.txt
+          echo "Result: Miss"
+
+      # 3. Echo the result
+      - name: Verify Result
+        run: echo "Cache Hit Status: ${{ steps.cache-step.outputs.cache-hit }}"
