@@ -1,0 +1,15 @@
+name: Restaurant Service  # Workflow Name
+on: [push]                # Trigger (When someone pushes code)
+
+jobs:
+  kitchen-station:        # Job 1
+    runs-on: ubuntu-latest # Runner (The machine)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 24f3003921@ds.study.iitm.ac.in # Step 1
+        run: echo "Preparing the order for the IITM student!"
+
+      - name: Cook Food          # Step 2
+        run: echo "The robot is now cooking..."
