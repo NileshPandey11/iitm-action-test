@@ -1,15 +1,32 @@
-name: Restaurant Service  # Workflow Name
-on: [push]                # Trigger (When someone pushes code)
+name: Restaurant Service
+on: [push, workflow_dispatch]
 
 jobs:
-  kitchen-station:        # Job 1
-    runs-on: ubuntu-latest # Runner (The machine)
+  kitchen-station:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 24f3003921@ds.study.iitm.ac.in # Step 1
+      # Aapka required email step
+      - name: 24f3003921@ds.study.iitm.ac.in
         run: echo "Preparing the order for the IITM student!"
 
-      - name: Cook Food          # Step 2
-        run: echo "The robot is now cooking..."
+      # Caching requirement (Part 2 ke liye)
+      - name: Cache Dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: my-dummy-data
+          key: cache-final-check-v1
+
+      # Caching requirement ka name step
+      - name: prime-cache-fa9d8f4
+        if: steps.cache-step.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p my-dummy-data
+          echo "Food is ready" > my-dummy-data/order.txt
+          echo "Cache primed for the grader!"
+
+      - name: Cook Food
+        run: echo "The robot has finished cooking!"
